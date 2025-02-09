@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.secretimage"
-        minSdk = 27
+        minSdk = 24
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -69,5 +69,13 @@ dependencies {
 
             implementation("io.coil-kt:coil-compose:2.4.0")
 
+    val cameraxVersion = "1.3.0-rc01"
 
+    implementation("androidx.camera:camera-core:$cameraxVersion")
+    implementation("androidx.camera:camera-camera2:$cameraxVersion")
+    implementation("androidx.camera:camera-lifecycle:$cameraxVersion")
+    implementation("androidx.camera:camera-video:$cameraxVersion")
+
+    implementation("androidx.camera:camera-view:$cameraxVersion")
+    implementation("androidx.camera:camera-extensions:$cameraxVersion")
 }
