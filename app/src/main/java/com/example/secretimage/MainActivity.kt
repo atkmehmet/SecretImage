@@ -1,5 +1,6 @@
 package com.example.secretimage
 
+import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -11,6 +12,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.content.ContextCompat
+import androidx.core.content.PackageManagerCompat
 import com.example.secretimage.ui.theme.SecretImageTheme
 
 class MainActivity : ComponentActivity() {
@@ -19,29 +22,26 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             SecretImageTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+
             }
         }
     }
-}
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    SecretImageTheme {
-        Greeting("Android")
+    private fun hasRequiredPermissions():Boolean{
+        return CAMERAX_PERMISSIONS.all {
+            ContextCompat.checkSelfPermission(
+                applicationContext,
+                it
+            )==PackageManager.PERMISSION_GRANTED
+        }
     }
+
+    companion object {
+        private val  CAMERAX_PERMISSIONS = arrayOf(
+            Manifest.permission.CAMERA,
+            Manifest.permission.RECORD_AUDIO
+        )
+    }
+
 }
