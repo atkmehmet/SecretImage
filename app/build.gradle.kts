@@ -69,6 +69,12 @@ dependencies {
 
             implementation("io.coil-kt:coil-compose:2.4.0")
 
+    
+        implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
+
+
+
+
     val cameraxVersion = "1.3.0-rc01"
 
     implementation("androidx.camera:camera-core:$cameraxVersion")
