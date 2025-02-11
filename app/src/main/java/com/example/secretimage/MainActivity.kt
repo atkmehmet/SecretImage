@@ -18,22 +18,39 @@ import androidx.core.content.PackageManagerCompat
 import com.example.secretimage.ui.theme.SecretImageTheme
 import android.Manifest
 import android.app.Activity
+import android.graphics.Bitmap
+import android.graphics.Matrix
+import android.util.Log
 import androidx.activity.viewModels
+import androidx.camera.core.CameraSelector
+import androidx.camera.core.ImageCapture
+import androidx.camera.core.ImageCaptureException
+import androidx.camera.core.ImageProxy
 import androidx.camera.view.CameraController
 import androidx.camera.view.LifecycleCameraController
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Face
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 class MainActivity : ComponentActivity() {
@@ -72,14 +89,74 @@ class MainActivity : ComponentActivity() {
                         CameraPreview(controller = controller,
                             modifier = Modifier.fillMaxSize()
                         )
-                        IconButton(onClick = { /*TODO*/ }) {
-                            
+                        IconButton(onClick = { controller.cameraSelector = if (controller.cameraSelector == CameraSelector.DEFAULT_BACK_CAMERA){
+                            CameraSelector.DEFAULT_FRONT_CAMERA
+                        }else
+                            CameraSelector.DEFAULT_BACK_CAMERA
+                        }, modifier = Modifier.offset(16.dp,16.dp)) {
+
+                            Icon(imageVector = Icons.Default.Face, contentDescription = "Switch Camera")
                         }
+                        Row (modifier = Modifier
+                            .fillMaxWidth()
+                            .align(Alignment.Center)
+                            .padding(16.dp),
+                            horizontalArrangement = Arrangement.SpaceAround){
+                            IconButton(onClick = { scope.launch { scaffoldState.bottomSheetState.expand() } }) {
+                                Icon(imageVector = Icons.Default.Phone, contentDescription = "Open gallery")
+                                
+                            }
+                            IconButton(onClick = { takePhoto(controller = controller,
+                                onPhotoTaken = viewModel::onTakePhoto) }) {
+                                Icon(
+                                    imageVector = Icons.Default.Home,
+                                    contentDescription = "Take photo"
+                                )
+
+                            }
+
+                        }
+
                     }
                     
                 }
             }
         }
+    }
+
+
+    private fun takePhoto(
+        controller: LifecycleCameraController,
+        onPhotoTaken: (Bitmap) -> Unit
+    ) {
+        controller.takePicture(
+            ContextCompat.getMainExecutor(applicationContext),
+            object : ImageCapture.OnImageCapturedCallback() {
+                override fun onCaptureSuccess(image: ImageProxy) {
+                    super.onCaptureSuccess(image)
+
+                    val matrix = Matrix().apply {
+                        postRotate(image.imageInfo.rotationDegrees.toFloat())
+                    }
+                    val rotatedBitmap = Bitmap.createBitmap(
+                        image.toBitmap(),
+                        0,
+                        0,
+                        image.width,
+                        image.height,
+                        matrix,
+                        true
+                    )
+
+                    onPhotoTaken(rotatedBitmap)
+                }
+
+                override fun onError(exception: ImageCaptureException) {
+                    super.onError(exception)
+                    Log.e("Camera", "Couldn't take photo: ", exception)
+                }
+            }
+        )
     }
 
 

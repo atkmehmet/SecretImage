@@ -5,11 +5,11 @@ plugins {
 
 android {
     namespace = "com.example.secretimage"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.secretimage"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -67,12 +67,12 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-            implementation("io.coil-kt:coil-compose:2.4.0")
-
-    
-        implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
+    implementation("io.coil-kt:coil-compose:2.4.0")
 
 
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
+
+    implementation("androidx.compose.material:material-icons-extended:1.5.1")
 
 
     val cameraxVersion = "1.3.0-rc01"
