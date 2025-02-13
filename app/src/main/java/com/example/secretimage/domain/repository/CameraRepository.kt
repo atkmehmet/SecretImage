@@ -4,10 +4,8 @@ import androidx.camera.view.LifecycleCameraController
 
 interface CameraRepository {
 
-    suspend fun  takePhot(
+    suspend fun  takePhoto(
         controller: LifecycleCameraController)
 
-    suspend fun  recordVideo(
-        controller: LifecycleCameraController
-    )
+
 }
