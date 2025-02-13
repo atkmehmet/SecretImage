@@ -1,6 +1,13 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    id("kotlin-kapt")
+    // id ("com.google.dagger.hilt.android")
+    //id ("kotlin-android")
+    //id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
+    //id ("dagger.hilt.android.plugin")
+
 }
 
 android {
@@ -84,4 +91,11 @@ dependencies {
 
     implementation("androidx.camera:camera-view:$cameraxVersion")
     implementation("androidx.camera:camera-extensions:$cameraxVersion")
+
+
+    implementation("com.google.dagger:hilt-android:2.51.1")
+    kapt("com.google.dagger:hilt-compiler:2.51.1")
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
+
+
 }
