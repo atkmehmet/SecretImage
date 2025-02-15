@@ -50,132 +50,41 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.secretimage.resentation.CameraScreen
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if(!hasRequiredPermissions()){
+        if (!arePermissionsGranted()) {
             ActivityCompat.requestPermissions(
-                this, CAMERAX_PERMISSIONS,0
+                this, CAMERA_PERMISSION, 100
             )
         }
         setContent {
             SecretImageTheme {
-
-              val scope = rememberCoroutineScope()
-              val scaffoldState = rememberBottomSheetScaffoldState()
-              val controller = remember {
-                  LifecycleCameraController(applicationContext).apply {
-                      setEnabledUseCases(
-                          CameraController.IMAGE_CAPTURE or CameraController.VIDEO_CAPTURE
-                      )
-                  }
-              }
-                val viewModel = viewModel<MainViewModel>()
-                val bitmaps by viewModel.bitmaps.collectAsState()
-
-                BottomSheetScaffold(scaffoldState = scaffoldState, sheetPeekHeight = 0.dp   ,sheetContent ={
-                    PhotoBottomSheetContent(bitmaps = bitmaps,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                   }
-                ) {padding->
-                    Box(modifier = Modifier
-                        .fillMaxSize()
-                        .padding(padding)
-                    ){
-                        CameraPreview(controller = controller,
-                            modifier = Modifier.fillMaxSize()
-                        )
-                        IconButton(onClick = { controller.cameraSelector = if (controller.cameraSelector == CameraSelector.DEFAULT_BACK_CAMERA){
-                            CameraSelector.DEFAULT_FRONT_CAMERA
-                        }else
-                            CameraSelector.DEFAULT_BACK_CAMERA
-                        }, modifier = Modifier.offset(16.dp,16.dp)) {
-
-                            Icon(imageVector = Icons.Default.Face, contentDescription = "Switch Camera")
-                        }
-                        Row (modifier = Modifier
-                            .fillMaxWidth()
-                            .align(Alignment.Center)
-                            .padding(16.dp),
-                            horizontalArrangement = Arrangement.SpaceAround){
-                            IconButton(onClick = { scope.launch { scaffoldState.bottomSheetState.expand() } }) {
-                                Icon(imageVector = Icons.Default.Phone, contentDescription = "Open gallery")
-                                
-                            }
-                            IconButton(onClick = { takePhoto(controller = controller,
-                                onPhotoTaken = viewModel::onTakePhoto) }) {
-                                Icon(
-                                    imageVector = Icons.Default.Home,
-                                    contentDescription = "Take photo"
-                                )
-
-                            }
-
-                        }
-
-                    }
-                    
-                }
+                CameraScreen(this)
             }
         }
+
     }
 
-
-    private fun takePhoto(
-        controller: LifecycleCameraController,
-        onPhotoTaken: (Bitmap) -> Unit
-    ) {
-        controller.takePicture(
-            ContextCompat.getMainExecutor(applicationContext),
-            object : ImageCapture.OnImageCapturedCallback() {
-                override fun onCaptureSuccess(image: ImageProxy) {
-                    super.onCaptureSuccess(image)
-
-                    val matrix = Matrix().apply {
-                        postRotate(image.imageInfo.rotationDegrees.toFloat())
-                    }
-                    val rotatedBitmap = Bitmap.createBitmap(
-                        image.toBitmap(),
-                        0,
-                        0,
-                        image.width,
-                        image.height,
-                        matrix,
-                        true
-                    )
-
-                    onPhotoTaken(rotatedBitmap)
-                }
-
-                override fun onError(exception: ImageCaptureException) {
-                    super.onError(exception)
-                    Log.e("Camera", "Couldn't take photo: ", exception)
-                }
-            }
-        )
-    }
-
-
-
-    fun hasRequiredPermissions(): Boolean {
-        return CAMERAX_PERMISSIONS.all { permission ->
+    fun arePermissionsGranted(): Boolean {
+        return CAMERA_PERMISSION.all { perssion ->
             ContextCompat.checkSelfPermission(
-                applicationContext, // Use "this" because the function is inside Context
-                permission
+                applicationContext,
+                perssion
             ) == PackageManager.PERMISSION_GRANTED
         }
     }
 
     companion object {
-        private val CAMERAX_PERMISSIONS = arrayOf(
+        val CAMERA_PERMISSION = arrayOf(
             Manifest.permission.CAMERA,
             Manifest.permission.RECORD_AUDIO
         )
     }
 
 }
-
