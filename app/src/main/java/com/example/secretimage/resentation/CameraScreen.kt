@@ -116,6 +116,27 @@ fun CameraScreen(
 
             Spacer(modifier = Modifier.width(1.dp))
 
+            Box(
+                modifier = Modifier
+                    .clip(CircleShape)
+                    .size(60.dp)
+                    .background(MaterialTheme.colorScheme.primary)
+                    .clickable {
+                        if ((activity as MainActivity).arePermissionsGranted()) {
+                            //cameraViewModel.onRecordVideo(controller)
+                        }
+                    },
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector =
+                    if (isRecording) Icons.Default.Stop
+                    else Icons.Default.Videocam,
+                    contentDescription = stringResource(R.string.record_video),
+                    tint = MaterialTheme.colorScheme.onPrimary,
+                    modifier = Modifier.size(26.dp)
+                )
+            }
 
             Box(
                 modifier = Modifier
@@ -137,8 +158,30 @@ fun CameraScreen(
                 )
             }
 
+            Spacer(modifier = Modifier.width(1.dp))
 
-
+            Box(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(14.dp))
+                    .size(45.dp)
+                    .background(MaterialTheme.colorScheme.primary)
+                    .clickable {
+                        controller.cameraSelector =
+                            if (controller.cameraSelector == CameraSelector.DEFAULT_BACK_CAMERA) {
+                                CameraSelector.DEFAULT_FRONT_CAMERA
+                            } else {
+                                CameraSelector.DEFAULT_BACK_CAMERA
+                            }
+                    },
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Cameraswitch,
+                    contentDescription = stringResource(R.string.switch_camera_preview),
+                    tint = MaterialTheme.colorScheme.onPrimary,
+                    modifier = Modifier.size(26.dp)
+                )
+            }
 
         }
 
