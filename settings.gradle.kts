@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "SecretImage"
 include(":app")
- 
+include(":app:room")
