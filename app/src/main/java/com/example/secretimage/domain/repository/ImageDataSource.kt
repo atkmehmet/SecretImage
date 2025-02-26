@@ -7,5 +7,5 @@ interface ImageDataSource {
 
 fun getImage():Flow<List<Image>>
 
-suspend fun addImage(image: Image)
+suspend fun addImage(imageString: String)
 }
