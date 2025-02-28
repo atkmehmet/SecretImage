@@ -29,9 +29,9 @@ val imageDao: ImageDao
             timestamp = this.timestamp,
             image = this.image)
     }
-    override suspend fun addImage(imageString: String) =
+    override suspend fun addImage(image: Image) =
         imageDao.insertImage(ImageEntity(
-           
+           name = image.name,
            timestamp =   image.timestamp,
             image = image.image
         ))
