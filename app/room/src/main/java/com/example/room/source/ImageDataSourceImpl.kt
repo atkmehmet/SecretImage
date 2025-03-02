@@ -7,9 +7,11 @@ import com.example.secretimage.model.Image
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class ImageDataSourceImpl  @Inject constructor(
-val imageDao: ImageDao
+private val imageDao: ImageDao
 ): ImageDataSource
 {
 

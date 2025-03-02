@@ -32,10 +32,11 @@ import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
+import javax.inject.Singleton
 
+@Singleton
 class CameraRepositoryImpl @Inject constructor(
-    private val application: Application,
-    private val imageDataSource:ImageDataSource
+    private val application: Application
 ) : CameraRepository {
 
     private var recoding: Recording? = null
@@ -64,7 +65,7 @@ class CameraRepositoryImpl @Inject constructor(
                     )
 
                     CoroutineScope(Dispatchers.IO).launch {
-                       imageDataSource.addImage(Image(0,"xxx01",bitmapToString(imageBitmap),0))
+                    //   imageDataSource.addImage(Image(0,"xxx01",bitmapToString(imageBitmap),0))
 
                     }
 
