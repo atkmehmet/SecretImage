@@ -15,22 +15,27 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
+import android.util.Base64
 import androidx.annotation.RequiresApi
 import androidx.camera.video.FileOutputOptions
 import androidx.camera.video.Recording
 import androidx.camera.video.VideoRecordEvent
 import androidx.camera.view.video.AudioConfig
 import com.example.secretimage.R
+import com.example.secretimage.domain.repository.ImageDataSource
+import com.example.secretimage.model.Image
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
 
 class CameraRepositoryImpl @Inject constructor(
-    private val application: Application
+    private val application: Application,
+    private val imageDataSource:ImageDataSource
 ) : CameraRepository {
 
     private var recoding: Recording? = null
@@ -59,7 +64,8 @@ class CameraRepositoryImpl @Inject constructor(
                     )
 
                     CoroutineScope(Dispatchers.IO).launch {
-                        savePhoto(imageBitmap)
+                       imageDataSource.addImage(Image(0,"xxx01",bitmapToString(imageBitmap),0))
+
                     }
 
                 }
@@ -67,6 +73,15 @@ class CameraRepositoryImpl @Inject constructor(
         )
 
     }
+
+
+    fun bitmapToString(bitmap: Bitmap): String {
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
+        val byteArray = byteArrayOutputStream.toByteArray()
+        return Base64.encodeToString(byteArray, Base64.DEFAULT)
+    }
+
 
     override suspend fun recordVideo(
         controller: LifecycleCameraController
