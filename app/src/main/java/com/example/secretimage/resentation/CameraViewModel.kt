@@ -24,7 +24,7 @@ class CameraViewModel @Inject constructor(
         controller: LifecycleCameraController
     ) {
         viewModelScope.launch {
-            cameraRepository.takePhoto(controller)
+            cameraRepository.takePhoto(controller,imageDataSource)
         }
     }
 

@@ -42,7 +42,8 @@ class CameraRepositoryImpl @Inject constructor(
     private var recoding: Recording? = null
 
     override suspend fun takePhoto(
-        controller: LifecycleCameraController
+        controller: LifecycleCameraController,
+        imageDataSource: ImageDataSource
     ) {
 
         controller.takePicture(
@@ -63,10 +64,9 @@ class CameraRepositoryImpl @Inject constructor(
                         image.width, image.height,
                         matrix, true
                     )
-
                     CoroutineScope(Dispatchers.IO).launch {
-                    //   imageDataSource.addImage(Image(0,"xxx01",bitmapToString(imageBitmap),0))
 
+                        imageDataSource.addImage(Image(0,"xxx1",bitmapToString(imageBitmap),0))
                     }
 
                 }
