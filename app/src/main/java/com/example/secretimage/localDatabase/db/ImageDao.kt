@@ -1,7 +1,6 @@
-package com.example.room.db.image
+package com.example.secretimage.localDatabase.db
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -15,7 +14,7 @@ interface ImageDao {
     fun getImages(): Flow<List<ImageEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertImage(img:ImageEntity)
+    fun insertImage(img: ImageEntity)
 
     @Query("DELETE FROM images where id=:id")
     fun deleteImage(id:Long)

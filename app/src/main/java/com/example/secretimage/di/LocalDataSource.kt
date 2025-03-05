@@ -1,9 +1,8 @@
-package com.example.room.injection
+package com.example.secretimage.di
 
-import com.example.room.db.image.ImageDao
-import com.example.room.source.ImageDataSourceImpl
+import com.example.secretimage.localDatabase.db.ImageDao
+import com.example.secretimage.data.repository.ImageDataSourceImpl
 import com.example.secretimage.domain.repository.ImageDataSource
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

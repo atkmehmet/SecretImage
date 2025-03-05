@@ -14,7 +14,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CameraViewModel @Inject constructor(
     private val cameraRepository: CameraRepository,
-    
+    private val imageDataSource: ImageDataSource
 ): ViewModel() {
 
     private val _isRecording = MutableStateFlow(false)

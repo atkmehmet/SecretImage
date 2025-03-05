@@ -1,7 +1,7 @@
-package com.example.room.source
+package com.example.secretimage.data.repository
 
-import com.example.room.db.image.ImageDao
-import com.example.room.db.image.ImageEntity
+import com.example.secretimage.localDatabase.db.ImageDao
+import com.example.secretimage.localDatabase.db.ImageEntity
 import com.example.secretimage.domain.repository.ImageDataSource
 import com.example.secretimage.model.Image
 import kotlinx.coroutines.flow.Flow
@@ -32,9 +32,11 @@ private val imageDao: ImageDao
             image = this.image)
     }
     override suspend fun addImage(image: Image) =
-        imageDao.insertImage(ImageEntity(
+        imageDao.insertImage(
+            ImageEntity(
            name = image.name,
            timestamp =   image.timestamp,
             image = image.image
-        ))
+        )
+        )
 }
