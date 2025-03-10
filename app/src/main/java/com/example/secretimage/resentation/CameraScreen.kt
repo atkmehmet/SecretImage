@@ -95,14 +95,7 @@ fun CameraScreen(
                     .size(45.dp)
                     .background(MaterialTheme.colorScheme.primary)
                     .clickable {
-                        Intent(
-                            Intent.ACTION_VIEW,
-                            Uri.parse(
-                                "content://media/internal/images/media"
-                            )
-                        ).also {
-                            activity.startActivity(it)
-                        }
+                        
                     },
                 contentAlignment = Alignment.Center
             ) {
