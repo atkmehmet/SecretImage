@@ -8,17 +8,23 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.util.Base64
+import com.example.secretimage.model.ImageBitmap
+import com.example.secretimage.model.toImageBitmap
 
 class PhotoView(private val imageDataSource: ImageDataSource):ViewModel() {
 
-    private val _images = MutableStateFlow<List<Image>>(emptyList())
-    val images: StateFlow<List<Image>> = _images // Expose as immutable StateFlow
+    private val _images = MutableStateFlow<List<ImageBitmap>>(emptyList())
+    val images: StateFlow<List<ImageBitmap>> = _images // Expose as immutable StateFlow
 
     init {
         viewModelScope.launch {
             imageDataSource.getImage().collectLatest { imageList ->
-                _images.value = imageList
+                val bitmapList = imageList.mapNotNull { it.toImageBitmap() }
+                _images.value = bitmapList
             }
         }
-    }
+        }
 }
