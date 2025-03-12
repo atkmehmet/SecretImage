@@ -95,7 +95,7 @@ fun CameraScreen(
                     .size(45.dp)
                     .background(MaterialTheme.colorScheme.primary)
                     .clickable {
-                        
+
                     },
                 contentAlignment = Alignment.Center
             ) {
