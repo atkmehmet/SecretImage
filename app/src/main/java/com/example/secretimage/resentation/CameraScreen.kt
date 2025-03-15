@@ -42,12 +42,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.example.secretimage.MainActivity
 import com.example.secretimage.R
 
 @Composable
 fun CameraScreen(
-    activity: Activity
+    activity: Activity,
+    navController: NavController
 ) {
     val controller = remember {
         LifecycleCameraController(

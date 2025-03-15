@@ -50,6 +50,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.secretimage.resentation.AppNavigation
 import com.example.secretimage.resentation.CameraScreen
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -65,7 +66,7 @@ class MainActivity : ComponentActivity() {
         }
         setContent {
             SecretImageTheme {
-                CameraScreen(this)
+               AppNavigation(activity = this)
             }
         }
 

@@ -10,9 +10,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 
 @Composable
-fun ImageScreen(photoView: PhotoView = viewModel()) {
+fun ImageScreen(photoView: PhotoView = viewModel(),navController: NavController) {
     val imageList = photoView.images.collectAsState().value
 
     Column(

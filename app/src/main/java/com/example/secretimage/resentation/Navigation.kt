@@ -1,5 +1,6 @@
 package com.example.secretimage.resentation
 
+import android.app.Activity
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -10,12 +11,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 
 @Composable
-fun AppNavigation() {
+fun AppNavigation(activity: Activity) {
     val navController = rememberNavController()
 
     NavHost(navController = navController, startDestination = "imageScreen") {
-        composable("imageScreen") { ImageScreen(navController) }
-        composable("secondScreen") { SecondScreen(navController) }
+        composable("imageScreen") { CameraScreen(activity,navController) }
+        composable("secondScreen") { ImageScreen(navController) }
     }
 }
 
